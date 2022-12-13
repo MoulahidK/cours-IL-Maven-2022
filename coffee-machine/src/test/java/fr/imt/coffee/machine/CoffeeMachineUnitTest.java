@@ -1,18 +1,19 @@
 package fr.imt.coffee.machine;
 
-import fr.imt.coffee.storage.cupboard.coffee.type.CoffeeType;
-import fr.imt.coffee.storage.cupboard.container.Cup;
-import fr.imt.coffee.storage.cupboard.exception.CupNotEmptyException;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
+import java.util.Random;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Random;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import fr.imt.coffee.machine.exception.MachineNotPluggedException;
+import fr.imt.coffee.storage.cupboard.coffee.type.CoffeeType;
+import fr.imt.coffee.storage.cupboard.container.Cup;
 
 public class CoffeeMachineUnitTest {
     public CoffeeMachine coffeeMachineUnderTest;
@@ -116,7 +117,7 @@ public class CoffeeMachineUnitTest {
         //AssertThrows va permettre de venir tester la levée d'une exception, ici lorsque que le contenant passé en
         //paramètre n'est pas vide
         //On teste à la fois le type d'exception levée mais aussi le message de l'exception
-        Assertions.assertThrows(CupNotEmptyException.class, ()->{
+        Assertions.assertThrows(MachineNotPluggedException.class, ()->{
                 coffeeMachineUnderTest.makeACoffee(mockCup, CoffeeType.MOKA);
             });
     }

@@ -1,17 +1,27 @@
-        package fr.imt.coffee.machine;
+package fr.imt.coffee.machine;
 
-        import fr.imt.coffee.machine.component.*;
-        import fr.imt.coffee.machine.exception.CannotMakeCremaWithSimpleCoffeeMachine;
-        import fr.imt.coffee.machine.exception.CoffeeTypeCupDifferentOfCoffeeTypeTankException;
-        import fr.imt.coffee.machine.exception.LackOfWaterInTankException;
-        import fr.imt.coffee.machine.exception.MachineNotPluggedException;
-        import fr.imt.coffee.storage.cupboard.coffee.type.CoffeeType;
-        import fr.imt.coffee.storage.cupboard.container.*;
-        import fr.imt.coffee.storage.cupboard.exception.CupNotEmptyException;
-        import org.apache.logging.log4j.LogManager;
-        import org.apache.logging.log4j.Logger;
+import java.util.Random;
 
-        import java.util.Random;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import fr.imt.coffee.machine.component.BeanTank;
+import fr.imt.coffee.machine.component.CoffeeGrinder;
+import fr.imt.coffee.machine.component.ElectricalResistance;
+import fr.imt.coffee.machine.component.WaterPump;
+import fr.imt.coffee.machine.component.WaterTank;
+import fr.imt.coffee.machine.exception.CannotMakeCremaWithSimpleCoffeeMachine;
+import fr.imt.coffee.machine.exception.CoffeeTypeCupDifferentOfCoffeeTypeTankException;
+import fr.imt.coffee.machine.exception.LackOfWaterInTankException;
+import fr.imt.coffee.machine.exception.MachineNotPluggedException;
+import fr.imt.coffee.storage.cupboard.coffee.type.CoffeeType;
+import fr.imt.coffee.storage.cupboard.container.CoffeeContainer;
+import fr.imt.coffee.storage.cupboard.container.CoffeeCup;
+import fr.imt.coffee.storage.cupboard.container.CoffeeMug;
+import fr.imt.coffee.storage.cupboard.container.Container;
+import fr.imt.coffee.storage.cupboard.container.Cup;
+import fr.imt.coffee.storage.cupboard.container.Mug;
+import fr.imt.coffee.storage.cupboard.exception.CupNotEmptyException;
 
 public class CoffeeMachine {
 
@@ -83,7 +93,7 @@ public class CoffeeMachine {
      * @throws CannotMakeCremaWithSimpleCoffeeMachine Exception levée lorsque vous souhaitez faire un café type Crema avec un une machine classique
      */
     public CoffeeContainer makeACoffee(Container container, CoffeeType coffeeType) throws LackOfWaterInTankException, InterruptedException, MachineNotPluggedException, CupNotEmptyException, CoffeeTypeCupDifferentOfCoffeeTypeTankException, CannotMakeCremaWithSimpleCoffeeMachine {
-        if(!isPlugged){
+        if(isPlugged){
             throw new MachineNotPluggedException("You must plug your coffee machine.");
         }
 
@@ -92,7 +102,7 @@ public class CoffeeMachine {
         }
 
         if (!container.isEmpty()){
-            throw new CupNotEmptyException("The cup is not empty !");
+            throw new LackOfWaterInTankException("You must add more water in the water tank.");
         }
 
         if(coffeeType != this.beanTank.getBeanCoffeeType()){
@@ -137,11 +147,11 @@ public class CoffeeMachine {
 
     public String toString(){
         return "Your coffee machine has : \n" +
-                "- water tank : " + waterTank.toString() + "\n" +
-                "- water pump : " + waterPump.toString() + "\n" +
-                "- electrical resistance : " + electricalResistance + "\n" +
-                "- is plugged : " + isPlugged + "\n"+
-                "and made " + nbCoffeeMade + " coffees";
+        "- water tank : " + waterTank.toString() + "\n" +
+        "- water pump : " + waterPump.toString() + "\n" +
+        "- electrical resistance : " + electricalResistance + "\n" +
+        "- is plugged : " + isPlugged + "\n"+
+        "and made " + nbCoffeeMade + " coffees";
     }
 
     public WaterTank getWaterTank() {
